@@ -7,9 +7,9 @@
 ### Model Performance Comparison
 | Model | Accuracy | Test Loss | Characteristics |
 | :--- | :--- | :--- |:--- |
-|**Baseline** | ~ |~  | Two linear layers with ReLU activation|
-|**Custom CNN** | ~ |~  | Convolutional Neural Network optimized for 1-channel grayscale images|
-|**ResNet18 (Transfer Learning)** | ~ |~  | Top-performing model utilizing pre-trained ImageNet weights|
+|**Baseline** | 80.57% | 0.2819  | Two linear layers with ReLU activation|
+|**Custom CNN** | 90.22% | 0.2286 | Convolutional Neural Network optimized for 1-channel grayscale images|
+|**ResNet18 (Transfer Learning)** | 99.73% | 0.0124 | Top-performing model utilizing pre-trained ImageNet weights|
 
 ## 🏗️ Model Architectures
 ### 1. Baseline Model
@@ -48,9 +48,24 @@
 
 
 ## 📊 Evaluation & Insights
-#### A **Confusion Matrix** was generated to analyse the reliability of the classification across all three models.  !!!!! noch machen 
+#### A **Confusion Matrix** was generated to analyse the reliability of the classification across all three models, providing a detailed view of where each architecture succeeded or struggled.
 
-![Confusion Matrix Comparison](confusion_matrix_final.png)
+![Confusion Matrix Comparison](confusion_matrix_casting_product.png)
+
+### 1. Baseline Model Analysis
+* **Observation:** The baseline matrix showed a high number of misclassifications, particularly confusing defective parts with OK parts (False Negatives).
+* **Technical Cause:** Since this model flattens the 2D image into a 1D vector, it loses all spatial context. It cannot distinguish between a dark pixel caused by a shadow and one caused by a structural defect.
+* **Industrial Risk:** High False Negative rates are unacceptable in production, as defective parts would reach the customer.
+
+### 2. Custom CNN Analysis
+* **Observation:** A significant reduction in errors compared to the baseline. The matrix showed better separation of classes.
+* **Technical Cause:** The use of Convolutional Layers allowed the model to learn local patterns like edges and surface textures.
+* **Industrial Risk:** It still struggled with subtle defects or variations in lighting, as the "shallow" architecture could not capture high-level semantic features.  
+
+### 3. ResNet18 Analysis
+* **Observation:** The matrix reveals near perfect performance, with only 3 misclassifications out of 715 samples.
+* **Technical Cause:** By using Transfer Learning and Residual Connections, the model leverages complex features learned from millions of images. It effectively distinguishes between harmless surface reflections and actual material defects.
+* **Industrial Risk:** With 100% precision on "OK" parts, the model ensures zero "False Alarms", which is crucial for maintaining a high production speed.
 
 ## 🛠️ Technical Stack
 * **Language:** Python
@@ -60,7 +75,7 @@
 
 
 ## Summary
-The transition from a linear baseline to a Transfer Learning approach with ResNet18 resulted in a significant performance increase. **!!!! weitermachen** 
+This project demonstrates a systematic progression in model complexity for industrial quality control, evolving from a linear baseline to a high-precision architecture. By transitioning from a basic MLP (80.57% accuracy) to a Custom CNN (90.22%) and finally a ResNet18 (99.73%), the development process highlights how different architectures capture spatial features. The final model achieves the precision required for automated quality assurance, successfully identifying 712 out of 715 test images with a Test Loss of 0.0124. This benchmark underscores the effectiveness of leveraging pre-trained weights to meet the rigorous reliability standards of modern manufacturing.
 
 
 
